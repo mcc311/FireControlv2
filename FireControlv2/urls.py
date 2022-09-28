@@ -1,0 +1,36 @@
+"""FireControlv2 URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, re_path, include
+from ships import views as shipsView
+import ships
+from weapons import views as weaponsView
+from django.views.generic import TemplateView
+from problems import views as problemView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # path('', TemplateView.as_view(template_name='index.html')),
+    re_path(r'^api/ships/$', shipsView.ships_list),
+    re_path(r'^api/ships/([0-9]*)$', shipsView.ships_detail),
+    re_path(r'^api/weapons/$', weaponsView.weapons_list),
+    re_path(r'^api/weapons/([0-9]*)$', weaponsView.weapons_detail),
+    re_path(r'^api/problems/$', problemView.post_problem),
+    re_path(r'^api/problems/([0-9]*)$', problemView.get_result),
+    path('', include('frontend.urls'))
+    
+
+]
