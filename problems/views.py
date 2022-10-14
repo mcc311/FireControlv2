@@ -1,5 +1,3 @@
-from inspect import getcallargs
-from telnetlib import TM
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -14,6 +12,7 @@ import time
 
 @api_view(['GET', 'POST'])
 def post_problem(request):
+    print(request.method)
     if request.method == 'POST':
         solve(request.data)
         data = Problem.objects.latest('id')
@@ -110,6 +109,11 @@ def solve(data):
     constraint = data['constraint']
     results = {'timeCost':{}}
     timeCost = {}
+
+    print("毀傷矩陣：")
+    print(damage_mtx)
+    print("威脅矩陣：")
+    print(threat_mtx)
     for policy in data['policy']:
         start = time.time()
         result = solver.solve(policy=policy, constraint=constraint)
